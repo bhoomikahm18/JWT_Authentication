@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 
-dotenv.config({path: '../.env'});
+dotenv.config({ path: '../.env' });
 
 async function signup(req, res, next) {
     const { name, email, password } = req.body;
@@ -47,10 +47,10 @@ async function login(req, res, next) {
     if (!isPasswordCorrect) {
         return res.status(400).json({ message: "Invalid Password" })
     }
-    const token = jwt.sign({id: existingUser._id}, process.env.JWT_SECRET_KEY,{
+    const token = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET_KEY, {
         expiresIn: "1hr"
     });
-    return res.status(200).json({ message: 'Successfully Loggedin' })
+    return res.status(200).json({ message: 'Successfully Loggedin', user: existingUser, token })
 }
 exports.signup = signup;
 exports.login = login;
