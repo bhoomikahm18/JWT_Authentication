@@ -52,5 +52,21 @@ async function login(req, res, next) {
     });
     return res.status(200).json({ message: 'Successfully Loggedin', user: existingUser, token })
 }
+
+async function getUser(req, res) {
+    const userID = req._id;
+    let user;
+    try {
+        user = await User.findById(userID, "-password");
+    } catch (err) {
+        return new Error(err)
+    }
+    if (!user) {
+        return res.status(401).json({ message: "User Not Found" });
+    }
+    return res.status(200).json({ user });
+}
+
 exports.signup = signup;
 exports.login = login;
+exports.getUser = getUser;
