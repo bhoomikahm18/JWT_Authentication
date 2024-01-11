@@ -4,9 +4,11 @@ const router = require("./routes/user_routes.js");
 const dotenv = require('dotenv');
 
 const cookieParser = require('cookie-parser');
-dotenv.config({path: './.env'});
+const cors = require('cors');
+dotenv.config({ path: './.env' });
 
 const app = express();
+app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use('/api', router);
