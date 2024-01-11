@@ -41,25 +41,26 @@ async function login(req, res, next) {
         return new Error(err);
     }
     if (!existingUser) {
-        return res.status(400).json({ message: "User not found! Signup Please" })
+        return res.status(404).json({ message: "User not found! Signup Please" })
     }
     const isPasswordCorrect = bcrypt.compareSync(password, existingUser.password);
     if (!isPasswordCorrect) {
-        return res.status(400).json({ message: "Invalid Password" })
+        return res.status(401).json({ message: "Invalid Password" })
     }
-    const token = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET_KEY, {
+    const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET_KEY, {
         expiresIn: "30s"
     });
-
     res.cookie(String(existingUser._id), token, {
+
         path: '/',
         expires: new Date(Date.now() + 1000 * 30),
         httpOnly: true,
         sameSite: 'lax'
     })
 
-    return res.status(200).json({ message: 'Successfully Loggedin', user: existingUser, token })
+    return res.status(200).json({ message: 'Successfully Loggedin', user: existingUser, token });
 }
+
 
 async function getUser(req, res) {
     const userID = req._id;
@@ -74,6 +75,7 @@ async function getUser(req, res) {
     }
     return res.status(200).json({ user });
 }
+
 
 exports.signup = signup;
 exports.login = login;
