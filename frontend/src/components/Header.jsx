@@ -14,7 +14,7 @@ function Header() {
         const res = await axios.post("http://localhost:5000/api/logout", null, {
             withCredentials: true
         });
-        if (res.status == 200) {
+        if (res.status === 200) {
             return res;
         }
         return new Error("Unable to logout. Please try again")

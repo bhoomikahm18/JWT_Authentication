@@ -98,7 +98,7 @@ function logout(req, res, next) {
     });
 }
 
-exports.logout = logout;
 exports.signup = signup;
 exports.login = login;
 exports.getUser = getUser;
+exports.logout = logout;
